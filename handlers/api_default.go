@@ -2,15 +2,15 @@ package handlers
 
 import (
 	"net/http"
-	"fmt"
 	"github.com/imforster/recycle/models"
 	"github.com/labstack/echo/v4"
 	"strconv"
+	log "github.com/sirupsen/logrus"
 )
 
 // CustomersCustomerIdAccountsAccountIdBalancesGet - Reterive current account balance
 func (c *Container) CustomersCustomerIdAccountsAccountIdBalancesGet(ctx echo.Context) error {
-	fmt.Println("Retrieving balances")
+	log.Info("Retrieving balances")
 	customerId, err := strconv.Atoi(ctx.Param("customerId"))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, "Bad Request!")
@@ -20,16 +20,22 @@ func (c *Container) CustomersCustomerIdAccountsAccountIdBalancesGet(ctx echo.Con
 		return ctx.JSON(http.StatusBadRequest, "Bad Request!")
 	}
 	bal := c.Customers[customerId].Accounts[accountId].Balance
-	return ctx.JSON(http.StatusOK, models.HelloWorld{
+	return ctx.JSON(http.StatusOK, models.ResponseMessage{
 		Message: "Balance is: " + strconv.Itoa(bal),
 	})
 }
 
 // CustomersCustomerIdAccountsAccountIdDepositsGet - Retreive all deposits for a customer
 func (c *Container) CustomersCustomerIdAccountsAccountIdDepositsGet(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, models.HelloWorld{
-		Message: "Hello World",
-	})
+	customerId, err := strconv.Atoi(ctx.Param("customerId"))
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, "Bad Request!")
+	}
+	accountId, err2 := strconv.Atoi(ctx.Param("accountId"))
+	if err2 != nil {
+		return ctx.JSON(http.StatusBadRequest, "Bad Request!")
+	}
+	return ctx.JSON(http.StatusOK, c.Customers[customerId].Accounts[accountId].Deposits)
 }
 
 // CustomersCustomerIdAccountsAccountIdDepositsPost - Record deposit of a recycled item
@@ -46,17 +52,18 @@ func (c *Container) CustomersCustomerIdAccountsAccountIdDepositsPost(ctx echo.Co
 	if err := ctx.Bind(d); err != nil {
 		return ctx.JSON(http.StatusBadRequest, "Bad Request!")
 	}
-	fmt.Println(d)
+	log.Info(d)
 	if (d.ItemSize == "small") {
 		c.Customers[customerId].Accounts[accountId].Balance = c.Customers[customerId].Accounts[accountId].Balance + 5
 	}
 	if (d.ItemSize == "large") {
 		c.Customers[customerId].Accounts[accountId].Balance = c.Customers[customerId].Accounts[accountId].Balance + 10
 	}
-	c.Customers[customerId].Accounts[accountId].Deposits.append(d)
+	c.Customers[customerId].Accounts[accountId].Deposits =
+		append(c.Customers[customerId].Accounts[accountId].Deposits, *d)
 	bal := c.Customers[customerId].Accounts[accountId].Balance
-	fmt.Println(c)
-	return ctx.JSON(http.StatusOK, models.HelloWorld{
+	log.Info(c)
+	return ctx.JSON(http.StatusOK, models.ResponseMessage{
 		Message: "Balance is: " + strconv.Itoa(bal),
 	})
 }
@@ -71,10 +78,10 @@ func (c *Container) CustomersCustomerIdAccountsAccountIdTransfersPost(ctx echo.C
 	if err2 != nil {
 		return ctx.JSON(http.StatusBadRequest, "Bad Request!")
 	}
-	c.Customers[customerId].Accounts[accountId].Balance = 10
-	fmt.Println("Balance is: " + strconv.Itoa(c.Customers[customerId].Accounts[accountId].Balance))
+
+	log.Info("Transfer Balance: " + strconv.Itoa(c.Customers[customerId].Accounts[accountId].Balance) + " to PayPal")
 	c.Customers[customerId].Accounts[accountId].Balance = 0
-	return ctx.JSON(http.StatusOK, models.HelloWorld{
+	return ctx.JSON(http.StatusOK, models.ResponseMessage{
 		Message: "Balance is: " + strconv.Itoa(c.Customers[customerId].Accounts[accountId].Balance),
 	})
 }
