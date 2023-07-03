@@ -5,14 +5,23 @@ import (
 	"github.com/imforster/recycle/models"
 	"github.com/labstack/echo/v4"
 	"strconv"
+	"errors"
 	log "github.com/sirupsen/logrus"
 )
+
+type Cube struct {
+	xCubeId string `header:"xCubeId"`
+}
 
 // CustomersCustomerIdAccountsAccountIdBalancesGet - Reterive current account balance
 func (c *Container) CustomersCustomerIdAccountsAccountIdBalancesGet(ctx echo.Context) error {
 	log.Info("Retrieving balances")
-	customerId, err := strconv.Atoi(ctx.Param("customerId"))
-	if err != nil {
+	if _, err := ValidateCubeId(ctx); err != nil {
+		log.Error("Invalid cube id! " + err.Error())
+		return err
+	}
+	customerId, err1 := strconv.Atoi(ctx.Param("customerId"))
+	if err1 != nil {
 		return ctx.JSON(http.StatusBadRequest, "Bad Request!")
 	}
 	accountId, err2 := strconv.Atoi(ctx.Param("accountId"))
@@ -27,6 +36,10 @@ func (c *Container) CustomersCustomerIdAccountsAccountIdBalancesGet(ctx echo.Con
 
 // CustomersCustomerIdAccountsAccountIdDepositsGet - Retreive all deposits for a customer
 func (c *Container) CustomersCustomerIdAccountsAccountIdDepositsGet(ctx echo.Context) error {
+	if _,err := ValidateCubeId(ctx); err != nil {
+		log.Error("Invalid cube id! " + err.Error())
+		return err
+	}
 	customerId, err := strconv.Atoi(ctx.Param("customerId"))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, "Bad Request!")
@@ -40,6 +53,14 @@ func (c *Container) CustomersCustomerIdAccountsAccountIdDepositsGet(ctx echo.Con
 
 // CustomersCustomerIdAccountsAccountIdDepositsPost - Record deposit of a recycled item
 func (c *Container) CustomersCustomerIdAccountsAccountIdDepositsPost(ctx echo.Context) error {
+	var (
+		cubeid string
+		err error
+	)
+	if cubeid, err = ValidateCubeId(ctx); err != nil {
+		log.Error("Invalid cube id! " + err.Error())
+		return err
+	}
 	customerId, err := strconv.Atoi(ctx.Param("customerId"))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, "Bad Request!")
@@ -59,6 +80,8 @@ func (c *Container) CustomersCustomerIdAccountsAccountIdDepositsPost(ctx echo.Co
 	if (d.ItemSize == "large") {
 		c.Customers[customerId].Accounts[accountId].Balance = c.Customers[customerId].Accounts[accountId].Balance + 10
 	}
+	d.CubeId = cubeid
+	d.CustomerId = strconv.Itoa(customerId)
 	c.Customers[customerId].Accounts[accountId].Deposits =
 		append(c.Customers[customerId].Accounts[accountId].Deposits, *d)
 	bal := c.Customers[customerId].Accounts[accountId].Balance
@@ -70,6 +93,10 @@ func (c *Container) CustomersCustomerIdAccountsAccountIdDepositsPost(ctx echo.Co
 
 // CustomersCustomerIdAccountsAccountIdTransfersPost - Transfer account balance to Paypal or other service
 func (c *Container) CustomersCustomerIdAccountsAccountIdTransfersPost(ctx echo.Context) error {
+	if _, err := ValidateCubeId(ctx); err != nil {
+		log.Error("Invalid cube id! " + err.Error())
+		return err
+	}
 	customerId, err := strconv.Atoi(ctx.Param("customerId"))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, "Bad Request!")
@@ -84,4 +111,21 @@ func (c *Container) CustomersCustomerIdAccountsAccountIdTransfersPost(ctx echo.C
 	return ctx.JSON(http.StatusOK, models.ResponseMessage{
 		Message: "Balance is: " + strconv.Itoa(c.Customers[customerId].Accounts[accountId].Balance),
 	})
+}
+
+func ValidateCubeId(ctx echo.Context) (string, error) {
+	var (
+		id []string
+		err bool
+	)
+	if id, err = ctx.Request().Header["Xcubeid"]; err != true {
+		ctx.JSON(http.StatusBadRequest, "Bad Request!")
+		return "",errors.New("Unauthorized - missing id")
+    }
+	if id[0] == "12345" {
+		log.Info("Valid Cube: " + id[0])
+		return id[0],nil;
+	}
+	ctx.JSON(http.StatusUnauthorized, "Unauthorized Request - Invalid cube id!")
+	return"",errors.New("Unauthorized")
 }

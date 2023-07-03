@@ -14,8 +14,8 @@ type Container struct {
 // NewContainer returns an empty or an initialized container for your handlers.
 func NewContainer() (Container, error) {
 	c := Container{Customers: map[int]models.Customer{
-        0:models.Customer{Id: 0, Name: "Ian", Accounts: []models.Account{models.Account{Id: 0}}},
-        1:models.Customer{Id: 1, Name: "Tad", Accounts: []models.Account{models.Account{Id: 0}}},
+        0:models.Customer{Id: 0, Name: "Sally", Accounts: []models.Account{models.Account{Id: 0}}},
+        1:models.Customer{Id: 1, Name: "Bob", Accounts: []models.Account{models.Account{Id: 0}}},
     }}
 	fmt.Println(c.Customers)
 	return c, nil

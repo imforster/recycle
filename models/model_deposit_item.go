@@ -5,6 +5,11 @@ import (
 )
 
 type DepositItem struct {
+	// cubeId
+	CubeId string `json:"cubeId,omitempty"`
+
+	// customerId
+	CustomerId string `json:"customerId,omitempty"`
 
 	// item to be recyled eg. small-bottle
 	ItemSize string `json:"itemSize,omitempty"`
