@@ -1,0 +1,113 @@
+openapi: "3.0.1"
+info:
+  title: Account service
+  description: Service to support recycling machine
+  version: 1.0.0
+paths:
+  /customers/{customerId}/accounts/{accountId]/deposits:
+    post:
+      summary: Record deposit of a recycled item
+      description: api that supports recording deposit of recycled item
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/xCubeIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepositItem'
+      responses:
+        200:
+          description: OK
+  /customers/{customerId}/accounts/{accountId}/deposits:
+    get:
+      summary: Retreive all deposits for a customer
+      description: api that supports recording deposit of recycled item
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/xCubeIdParam'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepositItem'
+
+
+  /customers/{customerId}/accounts/{accountId}/transfers:
+    post:
+      summary: Transfer account balance to Paypal or other service
+      description: api that supports recording deposit of recycled item
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/xCubeIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepositItem'
+      responses:
+        200:
+          description: OK
+
+  /customers/{customerId}/accounts/{accountId}/balances:
+    get:
+      summary: Reterive current account balance
+      description: api that supports recording deposit of recycled item
+      parameters:
+        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/xCubeIdParam'
+      responses:
+        200:
+          description: OK
+
+components:
+    parameters:
+      customerId:
+        name: customerId
+        in: path
+        required: true
+        description: customer identifier
+        schema:
+          type: string
+          format: int
+      acountId:
+        name: accountId
+        in: path
+        required: true
+        description: account identifier
+        schema:
+          type: string
+          format: int
+      xCubeIdParam:
+        name: xCubeId
+        in: header
+        required: true
+        description: cube identifier
+        schema:
+          type: string
+          format: uuid
+    schemas:
+      DepositItem:
+        title: Item deposited
+        type: object
+        properties:
+          itemSize:
+            type: string
+            description: item to be recyled eg. small-bottle
+            example: "small | large"
+            enum:
+              - small
+              - large
+          dateTime:
+            type: string
+            format: date-time
+            description: date and time item was recycled
+            example: "2017-07-21T17:32:28Z"
+        required:
+          - text
+
+
