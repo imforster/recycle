@@ -1,11 +1,9 @@
 package handlers
 
 import (
-	"net/http"
-
-	"models"
-
-	"github.com/labstack/echo/v4"
+    "github.com/imforster/recycle/models"
+    "github.com/labstack/echo/v4"
+    "net/http"
 )
 
 // CustomersCustomerIdAccountsAccountIdBalancesGet - Reterive current account balance
