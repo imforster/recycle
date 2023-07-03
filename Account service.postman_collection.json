@@ -1,0 +1,437 @@
+{
+	"info": {
+		"_postman_id": "951294b2-9cdd-4cde-933b-9e507e1e6bc9",
+		"name": "Account service",
+		"description": "Service to support recycling machine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "256143"
+	},
+	"item": [
+		{
+			"name": "customers",
+			"item": [
+				{
+					"name": "{customerId}",
+					"item": [
+						{
+							"name": "accounts",
+							"item": [
+								{
+									"name": "{accountId}",
+									"item": [
+										{
+											"name": "deposits",
+											"item": [
+												{
+													"name": "Record deposit of a recycled item",
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "(Required) cube identifier",
+																"key": "xCubeId",
+																"value": "12345"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"itemSize\": \"small\",\n  \"dateTime\": \"2023-07-05T17:32:28Z\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/customers/:customerId/accounts/:accountId/deposits",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"customers",
+																":customerId",
+																"accounts",
+																":accountId",
+																"deposits"
+															],
+															"variable": [
+																{
+																	"key": "customerId",
+																	"value": "0"
+																},
+																{
+																	"key": "accountId",
+																	"value": "0"
+																}
+															]
+														},
+														"description": "api that supports recording deposit of recycled item"
+													},
+													"response": [
+														{
+															"name": "OK",
+															"originalRequest": {
+																"method": "POST",
+																"header": [
+																	{
+																		"description": "(Required) cube identifier",
+																		"key": "xCubeId",
+																		"value": "<uuid>"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"itemSize\": \"small\",\n  \"dateTime\": \"<dateTime>\"\n}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/customers/:customerId/accounts/:accountId/deposits",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"customers",
+																		":customerId",
+																		"accounts",
+																		":accountId",
+																		"deposits"
+																	],
+																	"variable": [
+																		{
+																			"key": "customerId"
+																		},
+																		{
+																			"key": "accountId"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "text",
+															"header": [],
+															"cookie": [],
+															"body": null
+														}
+													]
+												},
+												{
+													"name": "Retreive all deposits for a customer",
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"description": "(Required) cube identifier",
+																"key": "xCubeId",
+																"value": "12345"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/customers/:customerId/accounts/:accountId/deposits",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"customers",
+																":customerId",
+																"accounts",
+																":accountId",
+																"deposits"
+															],
+															"variable": [
+																{
+																	"key": "customerId",
+																	"value": "0"
+																},
+																{
+																	"key": "accountId",
+																	"value": "0"
+																}
+															]
+														},
+														"description": "api that supports recording deposit of recycled item"
+													},
+													"response": [
+														{
+															"name": "OK",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"description": "(Required) cube identifier",
+																		"key": "xCubeId",
+																		"value": "<uuid>"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/customers/:customerId/accounts/:accountId/deposits",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"customers",
+																		":customerId",
+																		"accounts",
+																		":accountId",
+																		"deposits"
+																	],
+																	"variable": [
+																		{
+																			"key": "customerId"
+																		},
+																		{
+																			"key": "accountId"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"itemSize\": \"small\",\n  \"dateTime\": \"<dateTime>\"\n}"
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "transfers",
+											"item": [
+												{
+													"name": "Transfer account balance to Paypal or other service",
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "(Required) cube identifier",
+																"key": "xCubeId",
+																"value": "12345"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"itemSize\": \"small\",\n  \"dateTime\": \"<dateTime>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/customers/:customerId/accounts/:accountId/transfers",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"customers",
+																":customerId",
+																"accounts",
+																":accountId",
+																"transfers"
+															],
+															"variable": [
+																{
+																	"key": "customerId",
+																	"value": "0"
+																},
+																{
+																	"key": "accountId",
+																	"value": "0"
+																}
+															]
+														},
+														"description": "api that supports recording deposit of recycled item"
+													},
+													"response": [
+														{
+															"name": "OK",
+															"originalRequest": {
+																"method": "POST",
+																"header": [
+																	{
+																		"description": "(Required) cube identifier",
+																		"key": "xCubeId",
+																		"value": "<uuid>"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"itemSize\": \"small\",\n  \"dateTime\": \"<dateTime>\"\n}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/customers/:customerId/accounts/:accountId/transfers",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"customers",
+																		":customerId",
+																		"accounts",
+																		":accountId",
+																		"transfers"
+																	],
+																	"variable": [
+																		{
+																			"key": "customerId"
+																		},
+																		{
+																			"key": "accountId"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "text",
+															"header": [],
+															"cookie": [],
+															"body": null
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "balances",
+											"item": [
+												{
+													"name": "Reterive current account balance",
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"description": "(Required) cube identifier",
+																"key": "xCubeId",
+																"value": "\"12345\""
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/customers/:customerId/accounts/:accountId/balances",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"customers",
+																":customerId",
+																"accounts",
+																":accountId",
+																"balances"
+															],
+															"variable": [
+																{
+																	"key": "customerId",
+																	"value": "0"
+																},
+																{
+																	"key": "accountId",
+																	"value": "0"
+																}
+															]
+														},
+														"description": "api that supports recording deposit of recycled item"
+													},
+													"response": [
+														{
+															"name": "OK",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"description": "(Required) cube identifier",
+																		"key": "xCubeId",
+																		"value": "<uuid>"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/customers/:customerId/accounts/:accountId/balances",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"customers",
+																		":customerId",
+																		"accounts",
+																		":accountId",
+																		"balances"
+																	],
+																	"variable": [
+																		{
+																			"key": "customerId"
+																		},
+																		{
+																			"key": "accountId"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "text",
+															"header": [],
+															"cookie": [],
+															"body": null
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "/"
+		}
+	]
+}
