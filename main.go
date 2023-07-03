@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/GIT_USER_ID/GIT_REPO_ID/handlers"
+	"github.com/imforster/recycle/handlers"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -24,7 +24,7 @@ func main() {
 	e.GET("/customers/:customerId/accounts/:accountId/deposits", c.CustomersCustomerIdAccountsAccountIdDepositsGet)
 
 	// CustomersCustomerIdAccountsAccountIdDepositsPost - Record deposit of a recycled item
-	e.POST("/customers/:customerId/accounts/{accountId]/deposits", c.CustomersCustomerIdAccountsAccountIdDepositsPost)
+	e.POST("/customers/:customerId/accounts/:accountId/deposits", c.CustomersCustomerIdAccountsAccountIdDepositsPost)
 
 	// CustomersCustomerIdAccountsAccountIdTransfersPost - Transfer account balance to Paypal or other service
 	e.POST("/customers/:customerId/accounts/:accountId/transfers", c.CustomersCustomerIdAccountsAccountIdTransfersPost)
