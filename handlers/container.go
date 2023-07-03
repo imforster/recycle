@@ -12,8 +12,7 @@ type Container struct {
 
 // NewContainer returns an empty or an initialized container for your handlers.
 func NewContainer() (Container, error) {
-    a := []models.Account{Id:0}
-    c := Container{Customers: []models.Customer{models.Customer{Id:0,Name:"Ian",Accounts:a}}}
+    c := Container{Customers: []models.Customer{models.Customer{Id:0,Name:"Ian"}}}
     fmt.Println(c.Customers)
     return c, nil
 }
